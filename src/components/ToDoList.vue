@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done?" v-model="newToDo" @keyup.enter="addToDo">
-    <todo-item v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemaining" @removedTodo="removeToDo" @finishedEdit="finishedEdit">
+    <todo-item v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemaining">
     </todo-item>
 
     <div class="extra-container">
@@ -113,6 +113,10 @@ export default {
     showClearCompletedButton () {
       return this.todos.filter(todo => todo.completed).length > 0
     }
+  },
+  created(){
+    eventBus.$on('removedTodo', (index) => this.removeToDo(index))
+    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
   }
 }
 </script>
