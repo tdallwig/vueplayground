@@ -9,7 +9,7 @@
              v-model="title" @blur="doneEdit"
              @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
     </div>
-    <div class="remove-item" @click="removeToDo(index)">
+    <div class="remove-item" @click="removeToDo(todo.id)">
       &times;
     </div>
   </div>
@@ -59,8 +59,8 @@ export default {
     }
   },
   methods: {
-    removeToDo(index) {
-      this.$emit('removedTodo', index)
+    removeToDo (id) {
+      this.$emit('removedTodo', id)
     },
     editTodo () {
       this.beforeEditCache = this.title
@@ -72,13 +72,10 @@ export default {
       }
       this.editing = false
       this.$emit('finishedEdit', {
-        'index' : this.index,
-        'todo' : {
-          'id' : this.id,
-          'title' : this.title,
-          'completed': this.completed,
-          'editing': this.editing
-        }
+        'id': this.id,
+        'title': this.title,
+        'completed': this.completed,
+        'editing': this.editing
       })
     },
     cancelEdit () {
