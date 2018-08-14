@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done?" v-model="newToDo" @keyup.enter="addToDo">
-    <todo-item v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemaining" @removedTodo="removeToDo" @finishedEdit="finishedEdit">
+    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining" @removedTodo="removeToDo" @finishedEdit="finishedEdit">
     </todo-item>
 
     <div class="extra-container">
@@ -80,7 +80,8 @@ export default {
       this.newToDo = ''
       this.idForTodo++
     },
-    removeToDo (index) {
+    removeToDo (id) {
+      const index = this.todos.findIndex((item) => item.id == id)
       this.todos.splice(index, 1)
     },
     checkAllToDos () {
@@ -90,7 +91,8 @@ export default {
       this.todos = this.todos.filter(todo => !todo.completed)
     },
     finishedEdit(data){
-      this.todos.splice(data.index, 1, data.todo)
+      const index = this.todos.findIndex((item) => item.id == data.id)
+      this.todos.splice(index, 1, data)
     }
   },
   computed: {
